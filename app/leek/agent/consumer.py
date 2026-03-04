@@ -1,3 +1,4 @@
+import os
 import sys
 import time
 from urllib.parse import urljoin
@@ -107,7 +108,11 @@ class LeekConsumer(ConsumerMixin):
         # If you want the events to be persisted, use RabbitMQ instead!
         self.event_type = "fanout" if self.connection.transport.driver_type == "redis" else "topic"
         self.exchange = Exchange(exchange, self.event_type, durable=True, auto_delete=False)
-        self.queue = Queue(queue, exchange=self.exchange, routing_key=routing_key, durable=True, auto_delete=False)
+        is_rmq = self.connection.transport.driver_type != "redis"
+        quorum_enabled = is_rmq and os.environ.get("RABBITMQ_QUORUM_QUEUES_ENABLED", "false").lower() == "true"
+        queue_arguments = {"x-queue-type": "quorum"} if quorum_enabled else {}
+        self.queue = Queue(queue, exchange=self.exchange, routing_key=routing_key, durable=True, auto_delete=False,
+                           queue_arguments=queue_arguments)
         self.channel = None
 
         # CONNECTION TO BROKER
