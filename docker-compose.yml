@@ -46,8 +46,9 @@ services:
           }
         ]
       - LEEK_AGENT_API_SECRET=not-secret
+      - RABBITMQ_QUORUM_QUEUES_ENABLED=true
     ports:
-      - 5000:5000
+      - 5001:5000
     depends_on:
       mq:
         condition: service_healthy
@@ -76,7 +77,7 @@ services:
 
   # Just for local development!! (Test broker)
   mq:
-    image: rabbitmq:3.8.9-management-alpine
+    image: rabbitmq:3.13-management-alpine
     environment:
       - RABBITMQ_DEFAULT_USER=admin
       - RABBITMQ_DEFAULT_PASS=admin
