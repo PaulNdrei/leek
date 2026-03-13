@@ -11,7 +11,7 @@ RUN apt-get update \
     && apt-get install --no-install-recommends -y build-essential git \
     && rm -rf /var/lib/apt/lists/* \
     && python3 -m venv $VIRTUAL_ENV \
-    && python3 -m pip install --upgrade pip setuptools
+    && python3 -m pip install --upgrade pip
 
 # Install Backend Dependencies
 COPY leek/requirements.txt /opt/app/leek/
