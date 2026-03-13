@@ -11,7 +11,7 @@ RUN apt-get update \
     && apt-get install --no-install-recommends -y build-essential git \
     && rm -rf /var/lib/apt/lists/* \
     && python3 -m venv $VIRTUAL_ENV \
-    && python3 -m pip install --upgrade pip
+    && python3 -m pip install --upgrade pip setuptools
 
 # Install Backend Dependencies
 COPY leek/requirements.txt /opt/app/leek/
@@ -33,7 +33,7 @@ ADD bin /opt/app/bin
 ADD conf /opt/app/conf
 ADD leek /opt/app/leek
 
-FROM python:3.9-slim-buster AS runtime-image
+FROM python:3.9-slim-bookworm AS runtime-image
 
 WORKDIR /opt/app
 ENV DEBIAN_FRONTEND=noninteractive
