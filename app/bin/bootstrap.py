@@ -319,16 +319,16 @@ if ENABLE_API:
     # Close es connection
     connection.close()
     # Start API process
-    subprocess.run(["supervisorctl", "start", "api"])
+    subprocess.run(["/usr/bin/supervisorctl", "start", "api"])
     # Make sure the API is up before starting the agent
     ensure_connection(f"http://0.0.0.0:5000/v1/events/process")
 
 if ENABLE_AGENT:
     # Start agent.
     # If you don't have access to brokers infrastructure, you can setup standalone agent on third party infra
-    subprocess.run(["supervisorctl", "start", "agent"])
+    subprocess.run(["/usr/bin/supervisorctl", "start", "agent"])
 
 if ENABLE_WEB:
     # Start web application
     # If you don't want to spin up the web with the same runtime as API, you can deploy it on a cdn like Netlify
-    subprocess.run(["supervisorctl", "start", "web"])
+    subprocess.run(["/usr/bin/supervisorctl", "start", "web"])
